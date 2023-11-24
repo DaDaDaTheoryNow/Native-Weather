@@ -37,16 +37,18 @@ fun WeatherForecast(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .background(color = backgroundColor, shape = RoundedCornerShape(16.dp))
-                .padding(4.dp)
+                .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
         ) {
             Text(
-                modifier = modifier.padding(start = 6.dp, top = 3.dp),
+                modifier = modifier.padding(start = 16.dp, top = 4.dp),
                 text = "Today",
                 fontSize = 20.sp,
                 color = Color.White
             )
-            Divider(modifier = modifier.padding(top = 4.dp, bottom = 18.dp), color = MaterialTheme.colorScheme.surfaceTint)
+            Divider(
+                modifier = modifier.padding(top = 5.dp, bottom = 20.dp),
+                color = MaterialTheme.colorScheme.surfaceTint
+            )
             Row(
                 modifier = Modifier
                     .horizontalScroll(rememberScrollState())
@@ -54,11 +56,11 @@ fun WeatherForecast(
                 data.forEach { weatherData ->
                     HourlyWeatherDisplay(
                         weatherData = weatherData,
-                        modifier = Modifier.padding(horizontal = 14.dp)
+                        modifier = Modifier.padding(horizontal = 12.dp)
                     )
                 }
             }
-            Spacer(modifier = modifier.height(18.dp))
+            Spacer(modifier = modifier.height(20.dp))
         }
     }
 }

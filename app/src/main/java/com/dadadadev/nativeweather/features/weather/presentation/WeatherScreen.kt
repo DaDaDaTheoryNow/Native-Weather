@@ -50,7 +50,7 @@ fun WeatherScreen(
                 state = viewModel.state,
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer
             )
-            Spacer(modifier = modifier.height(16.dp))
+            Spacer(modifier = modifier.height(10.dp))
             WeatherForecast(
                 state = viewModel.state,
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer

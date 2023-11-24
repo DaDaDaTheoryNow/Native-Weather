@@ -1,6 +1,7 @@
 package com.dadadadev.nativeweather.features.weather.data.mappers
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.dadadadev.nativeweather.features.weather.data.remote.WeatherDataDto
 import com.dadadadev.nativeweather.features.weather.data.remote.WeatherDto
@@ -26,25 +27,11 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
         val humidity = humidities[index]
 
         val parsedTime = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME)
-        val now = LocalDateTime.now()
-
-        var minTime: LocalDateTime = if (parsedTime.isBefore(now)) {
-            parsedTime
-        } else {
-            parsedTime.minus(30, ChronoUnit.MINUTES)
-        }
-
-        var adjustedTime: LocalDateTime = if (parsedTime.isBefore(now)) {
-            parsedTime.plus(30, ChronoUnit.MINUTES)
-        } else {
-            parsedTime
-        }
 
         IndexedWeatherData(
             index = index,
             data = WeatherData(
-                time = adjustedTime,
-                minTime = minTime,
+                time = parsedTime,
                 temperatureCelsius = temperature,
                 pressure = pressure,
                 windSpeed = windSpeed,
@@ -64,7 +51,11 @@ fun WeatherDto.toWeatherInfo() : WeatherInfo {
     val weatherDataMap = weatherData.toWeatherDataMap()
     val now = LocalDateTime.now()
     val currentWeatherData = weatherDataMap[0]?.find {
-        val hour = if(now.minute < 30) now.hour else now.hour + 1
+        var hour = if(now.minute < 30) now.hour else now.hour + 1
+        if (hour == 24) {
+            hour = 0
+        }
+
         it.time.hour == hour
     }
 

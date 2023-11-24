@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.dadadadev.nativeweather.features.weather.domain.repository.LocationRepository
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -15,7 +14,6 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 class LocationRepositoryImpl @Inject constructor(
     private val locationClient: FusedLocationProviderClient,

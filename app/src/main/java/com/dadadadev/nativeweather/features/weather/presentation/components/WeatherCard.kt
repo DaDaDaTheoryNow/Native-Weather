@@ -1,6 +1,7 @@
 package com.dadadadev.nativeweather.features.weather.presentation.components
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -41,7 +42,7 @@ fun WeatherCard(
             colors = CardDefaults.cardColors(
                 containerColor = backgroundColor,
             ),
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(12.dp),
             modifier = modifier.padding(16.dp)
         ) {
             Column(
@@ -52,8 +53,6 @@ fun WeatherCard(
             ) {
                 Text(
                     text = "Today "
-                            + "${data.minTime.format(DateTimeFormatter.ofPattern("HH:mm"))}"
-                            + " - "
                             + "${data.time.format(DateTimeFormatter.ofPattern("HH:mm"))}",
                     modifier = modifier.align(Alignment.End),
                     color = Color.White
