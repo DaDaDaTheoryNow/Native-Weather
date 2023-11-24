@@ -1,7 +1,7 @@
 package com.dadadadev.nativeweather.di
 
 import android.app.Application
-import com.dadadadev.nativeweather.data.remote.WeatherApi
+import com.dadadadev.nativeweather.features.weather.data.remote.WeatherApi
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -19,7 +19,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideWeatherApi(): WeatherApi = Retrofit.Builder()
-        .baseUrl("https://open-meteo.com/")
+        .baseUrl("https://api.open-meteo.com/")
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
         .create()

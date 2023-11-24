@@ -1,7 +1,7 @@
 package com.dadadadev.nativeweather.di
 
-import com.dadadadev.nativeweather.data.location.DefaultLocationTracker
-import com.dadadadev.nativeweather.domain.location.LocationTracker
+import com.dadadadev.nativeweather.features.weather.data.repository.LocationRepositoryImpl
+import com.dadadadev.nativeweather.features.weather.domain.repository.LocationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 abstract class LocationModule {
     @Binds
     @Singleton
-    abstract fun bindLocationTracker(defaultLocationTracker: DefaultLocationTracker): LocationTracker
+    abstract fun bindLocationTracker(defaultLocationTracker: LocationRepositoryImpl): LocationRepository
 }
