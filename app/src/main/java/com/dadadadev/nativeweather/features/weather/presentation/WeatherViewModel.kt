@@ -1,6 +1,5 @@
 package com.dadadadev.nativeweather.features.weather.presentation
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,11 +14,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
-    private val repository: WeatherRepository,
-    private val locationTracker: LocationRepository
+    private val weatherRepository: WeatherRepository,
+    private val locationRepository: LocationRepository
 ): ViewModel() {
     var state by mutableStateOf(WeatherState())
         private set
+
+    fun selectDayOfWeek(i: Int) {
+        state = state.copy(
+            selectedFilterChipStates = List(7) { index -> index == i }
+        )
+    }
 
     fun loadWeatherInfo() {
         viewModelScope.launch {
@@ -28,8 +33,17 @@ class WeatherViewModel @Inject constructor(
                 isLoading = true,
                 error = null
             )
-            locationTracker.getCurrentLocation()?.let { location ->
-                when(val result = repository.getWeatherData(location.latitude, location.longitude)) {
+            locationRepository.getCurrentLocation()?.let { location ->
+                // find location area by lat and lon
+                val address = locationRepository.getCurrentAddress(location.latitude, location.longitude)
+                address?.let {
+                    val cityName = address.locality ?: address.subAdminArea ?: address.adminArea
+                    state = state.copy(
+                        locality = cityName ?: "Unknown"
+                    )
+                }
+
+                when(val result = weatherRepository.getWeatherData(location.latitude, location.longitude)) {
                     is Resource.Success -> {
                         state = state.copy(
                             weatherInfo = result.data,

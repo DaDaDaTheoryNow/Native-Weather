@@ -53,7 +53,8 @@ fun WeatherScreen(
             Spacer(modifier = modifier.height(10.dp))
             WeatherForecast(
                 state = viewModel.state,
-                backgroundColor = MaterialTheme.colorScheme.primaryContainer
+                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                onFilterChipClicked = { viewModel.selectDayOfWeek(it) }
             )
         }
         if(viewModel.state.isLoading) {

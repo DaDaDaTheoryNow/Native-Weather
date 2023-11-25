@@ -4,6 +4,8 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.content.ContextCompat
@@ -15,9 +17,11 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
+@Suppress("DEPRECATION")
 class LocationRepositoryImpl @Inject constructor(
     private val locationClient: FusedLocationProviderClient,
     private val application: Application,
+    private val geocoder: Geocoder,
 ): LocationRepository {
 
     override suspend fun getCurrentLocation(): Location? {
@@ -60,5 +64,13 @@ class LocationRepositoryImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    override fun getCurrentAddress(lat: Double, long: Double): Address? {
+        val addresses = geocoder.getFromLocation(lat, long, 1)
+        if (!addresses.isNullOrEmpty()) {
+            return addresses[0]
+        }
+        return null
     }
 }

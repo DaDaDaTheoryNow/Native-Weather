@@ -1,8 +1,10 @@
 package com.dadadadev.nativeweather.features.weather.data.mappers
 
+import android.app.Application
+import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.platform.LocalContext
 import com.dadadadev.nativeweather.features.weather.data.remote.WeatherDataDto
 import com.dadadadev.nativeweather.features.weather.data.remote.WeatherDto
 import com.dadadadev.nativeweather.features.weather.domain.weather.WeatherData
@@ -10,7 +12,7 @@ import com.dadadadev.nativeweather.features.weather.domain.weather.WeatherInfo
 import com.dadadadev.nativeweather.features.weather.domain.weather.WeatherType
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 private data class IndexedWeatherData(
     val index: Int,
@@ -36,7 +38,7 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherData>> {
                 pressure = pressure,
                 windSpeed = windSpeed,
                 humidity = humidity,
-                weatherType = WeatherType.fromWMO(weatherCode),
+                weatherType = WeatherType.fromWMO(weatherCode)
             )
         )
     }.groupBy {
