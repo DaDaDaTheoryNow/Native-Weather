@@ -1,6 +1,5 @@
 package com.dadadadev.nativeweather.features.weather.domain.weather
 
-import android.location.Address
 import java.time.LocalDateTime
 
 data class WeatherData(
