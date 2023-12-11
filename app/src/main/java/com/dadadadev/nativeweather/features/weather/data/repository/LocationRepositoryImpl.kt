@@ -11,13 +11,12 @@ import android.location.LocationManager
 import androidx.core.content.ContextCompat
 import com.dadadadev.nativeweather.features.weather.domain.repository.LocationRepository
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
-@Suppress("DEPRECATION")
 class LocationRepositoryImpl @Inject constructor(
     private val locationClient: FusedLocationProviderClient,
     private val application: Application,
@@ -42,9 +41,8 @@ class LocationRepositoryImpl @Inject constructor(
             return null
         }
 
-        return suspendCancellableCoroutine { cont ->
-            val cts = CancellationTokenSource()
-            locationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cts.token).apply {
+        val lastLocation = suspendCancellableCoroutine { cont ->
+            locationClient.lastLocation.apply {
                 if(isComplete) {
                     if(isSuccessful) {
                         cont.resume(result)
@@ -64,8 +62,37 @@ class LocationRepositoryImpl @Inject constructor(
                 }
             }
         }
+
+        // get last known location or get current location if last known location is null
+        if (lastLocation != null) {
+            return lastLocation
+        } else {
+            return suspendCancellableCoroutine { cont ->
+                val cts = CancellationTokenSource()
+                locationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token).apply {
+                    if(isComplete) {
+                        if(isSuccessful) {
+                            cont.resume(result)
+                        } else {
+                            cont.resume(null)
+                        }
+                        return@suspendCancellableCoroutine
+                    }
+                    addOnSuccessListener {
+                        cont.resume(it)
+                    }
+                    addOnFailureListener {
+                        cont.resume(null)
+                    }
+                    addOnCanceledListener {
+                        cont.cancel()
+                    }
+                }
+            }
+        }
     }
 
+    @Suppress("DEPRECATION")
     override fun getCurrentAddress(lat: Double, long: Double): Address? {
         val addresses = geocoder.getFromLocation(lat, long, 1)
         if (!addresses.isNullOrEmpty()) {

@@ -22,7 +22,8 @@ class WeatherViewModel @Inject constructor(
 
     fun selectDayOfWeek(i: Int) {
         state = state.copy(
-            selectedFilterChipStates = List(7) { index -> index == i }
+            selectedFilterChipStates = List(7) { index -> index == i },
+            currentDay = i
         )
     }
 

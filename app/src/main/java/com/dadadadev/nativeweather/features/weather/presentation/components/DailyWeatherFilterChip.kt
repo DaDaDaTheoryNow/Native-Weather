@@ -1,5 +1,8 @@
 package com.dadadadev.nativeweather.features.weather.presentation.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ChipDefaults
@@ -31,7 +34,9 @@ fun DailyWeatherFilterChip(
     onClick: () -> Unit
 ) {
     FilterChip(
-        modifier = modifier,
+        modifier = modifier.animateContentSize(
+            animationSpec = tween(durationMillis = 750,
+                easing = LinearOutSlowInEasing)),
         colors = ChipDefaults.filterChipColors(
             backgroundColor = MaterialTheme.colorScheme.onPrimary,
         ),
