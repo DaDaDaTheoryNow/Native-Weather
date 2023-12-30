@@ -3,9 +3,9 @@
   <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-## Technologies
 > In this project, I created a Native Weather App for get the weather for your area
 
+## Technologies
 **Server**
 - Weather Api (https://open-meteo.com/)
 
